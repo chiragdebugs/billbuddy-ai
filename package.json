@@ -7,11 +7,13 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "format": "prettier --write .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@fontsource-variable/geist": "^5.2.9",
+    "@supabase/supabase-js": "^2.110.2",
     "@tailwindcss/vite": "^4.3.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -34,6 +36,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "globals": "^17.7.0",
+    "prettier": "^3.9.5",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.62.0",
     "vite": "^8.1.1"
