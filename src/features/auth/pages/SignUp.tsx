@@ -1,3 +1,5 @@
+import SignUpForm from "../components/SignUpForm";
+
 export default function SignUp() {
   return (
     <main className="min-h-screen grid lg:grid-cols-2">
@@ -38,8 +40,8 @@ export default function SignUp() {
             Welcome to BillBuddy AI.
           </p>
 
-          <div className="mt-10 rounded-xl border-2 border-dashed border-slate-300 p-8 text-center text-slate-400">
-            SignUpForm will go here
+          <div className="mt-8">
+            <SignUpForm />
           </div>
         </div>
       </section>

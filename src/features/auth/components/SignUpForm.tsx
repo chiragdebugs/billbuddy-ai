@@ -1,106 +1,157 @@
-import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import PasswordField from "./PasswordField";
+import SocialLogin from "./SocialLogin";
+
+const signUpSchema = z
+  .object({
+    fullName: z.string().min(2, "Full name is required"),
+    email: z.string().email("Enter a valid email"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string(),
+    terms: z.boolean().refine((value) => value, {
+      message: "Please accept the Terms & Conditions",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export default function SignUpForm() {
-  const [showPassword, setShowPassword] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      terms: false,
+    },
+  });
+
+  const onSubmit = async (data: SignUpFormData) => {
+    console.log("Sign Up Data:", data);
+
+    // Next task:
+    // Connect to Supabase Auth
+  };
 
   return (
-    <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-xl">
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold text-slate-900">
-          Create your account
-        </h2>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-5"
+    >
+      <div className="space-y-2">
+        <Label htmlFor="fullName">Full Name</Label>
 
-        <p className="mt-2 text-slate-500">
-          Start splitting bills smarter with BillBuddy AI.
-        </p>
+        <Input
+          id="fullName"
+          placeholder="John Doe"
+          {...register("fullName")}
+        />
+
+        {errors.fullName && (
+          <p className="text-sm text-red-500">
+            {errors.fullName.message}
+          </p>
+        )}
       </div>
 
-      <form className="space-y-5">
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            Full Name
-          </label>
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
 
-          <input
-            type="text"
-            placeholder="John Doe"
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-          />
-        </div>
+        <Input
+          id="email"
+          type="email"
+          placeholder="john@example.com"
+          {...register("email")}
+        />
 
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            Email
-          </label>
+        {errors.email && (
+          <p className="text-sm text-red-500">
+            {errors.email.message}
+          </p>
+        )}
+      </div>
 
-          <input
-            type="email"
-            placeholder="john@example.com"
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-          />
-        </div>
+      <PasswordField
+        id="password"
+        label="Password"
+        placeholder="Enter password"
+      />
 
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            Password
-          </label>
+      <PasswordField
+        id="confirmPassword"
+        label="Confirm Password"
+        placeholder="Confirm password"
+      />
 
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="••••••••"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 pr-12 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-            />
+      <div className="flex items-start gap-3">
+        <input
+          id="terms"
+          type="checkbox"
+          className="mt-1"
+          {...register("terms")}
+        />
 
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-        </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            Confirm Password
-          </label>
-
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="••••••••"
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full rounded-xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-700"
+        <Label
+          htmlFor="terms"
+          className="font-normal leading-6"
         >
-          Create Account
-        </button>
-      </form>
-
-      <div className="my-6 flex items-center">
-        <div className="h-px flex-1 bg-slate-200" />
-        <span className="mx-4 text-sm text-slate-400">OR</span>
-        <div className="h-px flex-1 bg-slate-200" />
+          I agree to the Terms & Conditions
+        </Label>
       </div>
 
-      <button
-        className="w-full rounded-xl border border-slate-300 py-3 font-medium transition hover:bg-slate-50"
-      >
-        Continue with Google
-      </button>
+      {errors.terms && (
+        <p className="text-sm text-red-500">
+          {errors.terms.message}
+        </p>
+      )}
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Creating Account..." : "Create Account"}
+      </Button>
+
+      <div className="relative py-2">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t" />
+        </div>
+
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-white px-2 text-slate-500">
+            Or continue with
+          </span>
+        </div>
+      </div>
+
+      <SocialLogin />
+
+      <p className="text-center text-sm text-slate-500">
         Already have an account?{" "}
-        <span className="cursor-pointer font-semibold text-emerald-600 hover:underline">
+        <button
+          type="button"
+          className="font-semibold text-emerald-600 hover:underline"
+        >
           Sign In
-        </span>
+        </button>
       </p>
-    </div>
+    </form>
   );
 }
