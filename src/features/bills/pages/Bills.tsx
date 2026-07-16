@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
+import { Plus, Receipt, Download } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import BillCard from "../components/BillCard";
 import { billService } from "../services/bill.service";
+import { BILL_CATEGORIES } from "../constants/categories";
 
 interface Bill {
   id: string;
@@ -11,12 +16,15 @@ interface Bill {
   participants: {
     id: string;
     name: string;
+    status: string;
   }[];
+  category?: string;
 }
 
 export default function Bills() {
   const [bills, setBills] = useState<Bill[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   useEffect(() => {
     const fetchBills = async () => {
@@ -33,58 +41,143 @@ export default function Bills() {
     fetchBills();
   }, []);
 
+  const handleExportCSV = () => {
+    if (bills.length === 0) return;
+
+    // Headers
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "ID,Title,Amount,Category,Participants,Status\n";
+
+    // Rows
+    bills.forEach(bill => {
+      const participantsStr = bill.participants.map(p => p.name).join(" & ");
+      const status = bill.participants?.every((p) => p.status === "Paid") ? "Paid" : "Pending";
+      const row = `"${bill.id}","${bill.title}",${bill.amount},"${bill.category || 'General'}","${participantsStr}","${status}"`;
+      csvContent += row + "\n";
+    });
+
+    // Download
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `billbuddy_export_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
-        Loading bills...
+      <div className="mx-auto max-w-7xl space-y-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-semibold tracking-tight text-foreground">Bills</h1>
+            <p className="mt-2 text-muted-foreground">Manage and split your expenses.</p>
+          </div>
+          <Skeleton className="h-10 w-32" />
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[...Array(6)].map((_, i) => (
+            <Skeleton key={i} className="h-48 w-full rounded-xl" />
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6 md:p-10">
-      <div className="mx-auto max-w-7xl space-y-8">
-
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold text-slate-900">
-              Bills
-            </h1>
-
-            <p className="mt-2 text-slate-500">
-              Manage and split your expenses.
-            </p>
-          </div>
-
-          <Link
-            to="/create-bill"
-            className="rounded-xl bg-emerald-600 px-5 py-3 font-medium text-white hover:bg-emerald-700"
-          >
-            + Create Bill
-          </Link>
+    <div className="mx-auto max-w-7xl space-y-8">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+            Bills
+          </h1>
+          <p className="mt-2 text-muted-foreground">
+            Manage and split your expenses.
+          </p>
         </div>
 
-
-        {bills.length === 0 ? (
-          <div className="rounded-2xl border bg-white p-10 text-center text-slate-500">
-            No bills found. Create your first bill 🚀
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {bills.map((bill) => (
-              <BillCard
-                key={bill.id}
-                id={bill.id}
-                title={bill.title}
-                amount={`₹${bill.amount}`}
-                participants={bill.participants.length}
-                status="Pending"
-              />
-            ))}
-          </div>
-        )}
-
+        <div className="flex flex-col sm:flex-row items-center gap-3">
+          <Button variant="outline" onClick={handleExportCSV} disabled={bills.length === 0} className="w-full sm:w-auto">
+            <Download className="mr-2" size={16} />
+            Export CSV
+          </Button>
+          <Link to="/create-bill" className={cn(buttonVariants(), "w-full sm:w-auto")}>
+            <Plus className="mr-2" size={16} />
+            Create Bill
+          </Link>
+        </div>
       </div>
-    </main>
+
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setSelectedCategory("All")}
+          className={cn(
+            "rounded-full px-4 py-1.5 text-sm font-medium transition-all",
+            selectedCategory === "All"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-muted text-muted-foreground hover:bg-muted/80"
+          )}
+        >
+          All
+        </button>
+        {BILL_CATEGORIES.map((cat) => {
+          const Icon = cat.icon;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={cn(
+                "flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all",
+                selectedCategory === cat.id
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+              )}
+            >
+              <Icon size={14} />
+              {cat.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {bills.length === 0 ? (
+        <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border border-dashed p-10 text-center">
+          <div className="mb-4 rounded-full bg-primary/10 p-4 text-primary">
+            <Receipt size={32} />
+          </div>
+          <h3 className="mb-2 text-lg font-semibold text-foreground">No bills found</h3>
+          <p className="mb-6 max-w-sm text-muted-foreground">
+            You haven't created any bills yet. Add your first expense to start splitting with friends.
+          </p>
+          <Link to="/create-bill" className={buttonVariants()}>
+            <Plus className="mr-2" size={16} />
+            Create your first bill
+          </Link>
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {bills
+            .filter((b) => selectedCategory === "All" || b.category === selectedCategory)
+            .map((bill) => (
+            <BillCard
+              key={bill.id}
+              id={bill.id}
+              title={bill.title}
+              amount={`₹${bill.amount}`}
+              participants={bill.participants.length}
+              status={bill.participants?.every((p) => p.status === "Paid") ? "Paid" : "Pending"}
+              category={bill.category}
+            />
+          ))}
+          
+          {bills.filter((b) => selectedCategory === "All" || b.category === selectedCategory).length === 0 && (
+            <div className="col-span-full py-12 text-center text-muted-foreground">
+              No bills found in this category.
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

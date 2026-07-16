@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
+import { IndianRupee, ReceiptText, Clock, CheckCircle2 } from "lucide-react";
 
 import DashboardHeader from "../components/DashboardHeader";
 import QuickActions from "../components/QuickActions";
 import RecentBills from "../components/RecentBills";
 import StatsCard from "../components/StatsCard";
+import CurrencyConverter from "../components/CurrencyConverter";
+import HouseholdBudget from "../components/HouseholdBudget";
+import { useAppMode } from "@/context/ModeProvider";
+import AIInsights from "../components/AIInsights";
+import ExpenseChart from "../components/ExpenseChart";
+import ActivityFeed from "../components/ActivityFeed";
 
 import { dashboardService } from "../services/dashboard.service";
 
@@ -17,6 +24,7 @@ interface DashboardStats {
     amount: number;
     created_at: string;
   }[];
+  expensesByCategory?: { name: string; value: number }[];
 }
 
 export default function Dashboard() {
@@ -25,6 +33,7 @@ export default function Dashboard() {
   );
 
   const [loading, setLoading] = useState(true);
+  const { mode } = useAppMode();
 
 
   useEffect(() => {
@@ -59,52 +68,65 @@ export default function Dashboard() {
 
 
   return (
-    <main className="min-h-screen bg-slate-50 p-6 md:p-10">
+    <div className="mx-auto max-w-7xl space-y-8">
+      <DashboardHeader />
 
-      <div className="mx-auto max-w-7xl space-y-8">
+      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard
+          title="Total Expenses"
+          value={`₹${stats?.totalExpenses || 0}`}
+          subtitle="All bills created"
+          icon={<IndianRupee size={16} />}
+          trend={{ value: "+12.5%", isPositive: true }}
+        />
 
-        <DashboardHeader />
+        <StatsCard
+          title="Total Bills"
+          value={`${stats?.totalBills || 0}`}
+          subtitle="Created bills"
+          icon={<ReceiptText size={16} />}
+          trend={{ value: "+2", isPositive: true }}
+        />
 
+        <StatsCard
+          title="Pending Payments"
+          value={`${stats?.pendingPayments || 0}`}
+          subtitle="Need settlement"
+          icon={<Clock size={16} />}
+        />
 
-        <section className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <StatsCard
+          title="Paid Payments"
+          value={`${stats?.paidPayments || 0}`}
+          subtitle="Completed"
+          icon={<CheckCircle2 size={16} />}
+        />
+      </section>
 
-          <StatsCard
-            title="Total Expenses"
-            value={`₹${stats?.totalExpenses || 0}`}
-            subtitle="All bills created"
-          />
+      <AIInsights />
 
+      <div className="grid gap-8 lg:grid-cols-3">
+        {mode === "Travel" && (
+          <div className="lg:col-span-3">
+            <CurrencyConverter />
+          </div>
+        )}
+        
+        {mode === "Family" && (
+          <div className="lg:col-span-3">
+            <HouseholdBudget />
+          </div>
+        )}
 
-          <StatsCard
-            title="Total Bills"
-            value={`${stats?.totalBills || 0}`}
-            subtitle="Created bills"
-          />
-
-
-          <StatsCard
-            title="Pending Payments"
-            value={`${stats?.pendingPayments || 0}`}
-            subtitle="Need settlement"
-          />
-
-
-          <StatsCard
-            title="Paid Payments"
-            value={`${stats?.paidPayments || 0}`}
-            subtitle="Completed"
-          />
-
-        </section>
-
-
-        <QuickActions />
-
-
-        <RecentBills />
-
+        <div className="lg:col-span-2 flex flex-col gap-8">
+          <ExpenseChart data={stats?.expensesByCategory || []} />
+          <RecentBills />
+        </div>
+        <div className="lg:col-span-1 flex flex-col gap-8">
+          <QuickActions />
+          <ActivityFeed />
+        </div>
       </div>
-
-    </main>
+    </div>
   );
 }
