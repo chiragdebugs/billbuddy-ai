@@ -10,21 +10,22 @@ export default function DashboardHeader() {
   const firstName = user?.user_metadata?.full_name?.split(" ")[0] || "there";
 
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between mb-8">
       <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+        <h1 className="text-4xl font-semibold tracking-tight text-foreground">
           Welcome back, {firstName}
         </h1>
-        <p className="mt-2 text-muted-foreground">
+        <p className="mt-2 text-base text-muted-foreground">
           Here's an overview of your expenses and recent activity.
         </p>
       </div>
 
       <Button
+        size="lg"
         onClick={() => navigate("/create-bill")}
-        className="self-start sm:self-auto"
+        className="self-start sm:self-auto shadow-soft"
       >
-        <Plus className="mr-2" size={16} />
+        <Plus className="mr-2" size={18} />
         New Bill
       </Button>
     </div>

@@ -32,17 +32,23 @@ export default function ParticipantList({
         <CardTitle>Participants</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <form onSubmit={addParticipant} className="flex gap-3">
+        <div className="flex gap-3">
           <Input
             placeholder="Enter friend's name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                addParticipant();
+              }
+            }}
             className="flex-1"
           />
-          <Button type="submit" variant="secondary">
+          <Button type="button" onClick={() => addParticipant()} variant="secondary">
             <Plus size={16} className="mr-2" /> Add
           </Button>
-        </form>
+        </div>
 
         {participants.length > 0 ? (
           <div className="space-y-2">

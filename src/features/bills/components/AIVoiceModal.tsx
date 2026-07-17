@@ -61,7 +61,7 @@ export default function AIVoiceModal({ isOpen, onClose, onParsed }: AIVoiceModal
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="w-full max-w-sm overflow-hidden rounded-3xl border border-primary/20 bg-card p-6 shadow-2xl relative"
+            className="w-full max-w-sm overflow-hidden rounded-[2rem] border border-border/30 bg-glass-card p-6 shadow-2xl relative"
           >
             <button
               onClick={onClose}
@@ -75,9 +75,9 @@ export default function AIVoiceModal({ isOpen, onClose, onParsed }: AIVoiceModal
               <div className="relative">
                 {phase === "listening" && (
                   <motion.div
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
+                    animate={{ scale: [1, 1.5, 1], opacity: [0.3, 0, 0.3] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
-                    className="absolute inset-0 rounded-full bg-primary/30 blur-md"
+                    className="absolute inset-0 rounded-full bg-accent/40 blur-xl"
                   />
                 )}
                 
@@ -85,10 +85,10 @@ export default function AIVoiceModal({ isOpen, onClose, onParsed }: AIVoiceModal
                   onClick={phase === "idle" ? handleStartListening : undefined}
                   className={`relative flex h-24 w-24 items-center justify-center rounded-full transition-all duration-500 ${
                     phase === "idle" 
-                      ? "bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground hover:scale-105" 
+                      ? "bg-accent/10 text-accent hover:bg-accent hover:text-accent-foreground hover:scale-105" 
                       : phase === "listening"
-                      ? "bg-primary text-primary-foreground shadow-[0_0_40px_rgba(var(--primary),0.6)]"
-                      : "bg-primary text-primary-foreground"
+                      ? "bg-accent text-accent-foreground shadow-[0_0_40px_rgba(var(--accent),0.5)]"
+                      : "bg-accent text-accent-foreground"
                   }`}
                 >
                   {phase === "processing" ? (

@@ -87,23 +87,23 @@ export default function Bills() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-8">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between mb-4">
         <div>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground">
             Bills
           </h1>
-          <p className="mt-2 text-muted-foreground">
+          <p className="mt-2 text-base text-muted-foreground">
             Manage and split your expenses.
           </p>
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-3">
-          <Button variant="outline" onClick={handleExportCSV} disabled={bills.length === 0} className="w-full sm:w-auto">
+          <Button variant="outline" size="lg" onClick={handleExportCSV} disabled={bills.length === 0} className="w-full sm:w-auto">
             <Download className="mr-2" size={16} />
             Export CSV
           </Button>
-          <Link to="/create-bill" className={cn(buttonVariants(), "w-full sm:w-auto")}>
-            <Plus className="mr-2" size={16} />
+          <Link to="/create-bill" className={cn(buttonVariants({ size: "lg" }), "w-full sm:w-auto shadow-soft")}>
+            <Plus className="mr-2" size={18} />
             Create Bill
           </Link>
         </div>
@@ -113,10 +113,10 @@ export default function Bills() {
         <button
           onClick={() => setSelectedCategory("All")}
           className={cn(
-            "rounded-full px-4 py-1.5 text-sm font-medium transition-all",
+            "rounded-full px-5 py-2 text-sm font-medium transition-all duration-200",
             selectedCategory === "All"
-              ? "bg-primary text-primary-foreground shadow-sm"
-              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              ? "bg-accent text-accent-foreground shadow-soft"
+              : "bg-muted/50 text-muted-foreground hover:bg-muted/80 hover:text-foreground"
           )}
         >
           All
@@ -128,10 +128,10 @@ export default function Bills() {
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
               className={cn(
-                "flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium transition-all",
+                "flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium transition-all duration-200",
                 selectedCategory === cat.id
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "bg-muted text-muted-foreground hover:bg-muted/80"
+                  ? "bg-accent text-accent-foreground shadow-soft"
+                  : "bg-muted/50 text-muted-foreground hover:bg-muted/80 hover:text-foreground"
               )}
             >
               <Icon size={14} />

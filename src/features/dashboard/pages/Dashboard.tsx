@@ -32,9 +32,9 @@ export default function Dashboard() {
     null
   );
 
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const { mode } = useAppMode();
-
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -44,11 +44,12 @@ export default function Dashboard() {
 
         setStats(data);
 
-      } catch (error) {
+      } catch (err: any) {
         console.error(
           "Dashboard error:",
-          error
+          err
         );
+        setError(err.message || "An unknown error occurred");
       } finally {
         setLoading(false);
       }
@@ -62,6 +63,14 @@ export default function Dashboard() {
     return (
       <div className="flex min-h-screen items-center justify-center">
         Loading dashboard...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-destructive p-4 text-center">
+        Error loading dashboard: {error}
       </div>
     );
   }

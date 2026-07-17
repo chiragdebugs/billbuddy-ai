@@ -12,6 +12,20 @@ interface ExpenseChartProps {
   data: { name: string; value: number }[];
 }
 
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-lg border bg-background p-3 shadow-sm">
+        <p className="mb-1 text-sm font-medium">{payload[0].name}</p>
+        <p className="text-sm font-semibold text-foreground">
+          ₹{payload[0].value.toLocaleString()}
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function ExpenseChart({ data }: ExpenseChartProps) {
   // If no data, show a placeholder
   if (!data || data.length === 0) {
@@ -48,24 +62,10 @@ export default function ExpenseChart({ data }: ExpenseChartProps) {
     fill: categoryColors[item.name] || categoryColors.General
   }));
 
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="rounded-lg border bg-background p-3 shadow-sm">
-          <p className="mb-1 text-sm font-medium">{payload[0].name}</p>
-          <p className="text-sm font-semibold text-foreground">
-            ₹{payload[0].value.toLocaleString()}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
-    <Card className="col-span-full xl:col-span-1 flex flex-col">
-      <CardHeader>
-        <CardTitle>Spending by Category</CardTitle>
+    <Card className="col-span-full xl:col-span-1 flex flex-col bg-glass-card border-border/30 shadow-soft">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg font-medium text-foreground">Spending by Category</CardTitle>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <div className="h-[250px] w-full">
@@ -75,35 +75,35 @@ export default function ExpenseChart({ data }: ExpenseChartProps) {
                 data={chartData}
                 cx="50%"
                 cy="50%"
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={5}
+                innerRadius={65}
+                outerRadius={85}
+                paddingAngle={4}
                 dataKey="value"
                 stroke="none"
               >
                 {chartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                  <Cell key={`cell-${index}`} fill={entry.fill} className="transition-all duration-300 hover:opacity-80 outline-none" />
                 ))}
               </Pie>
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip />} cursor={false} />
             </PieChart>
           </ResponsiveContainer>
         </div>
         
         {/* Legend */}
-        <div className="mt-4 grid grid-cols-2 gap-4 text-sm pb-6">
+        <div className="mt-6 grid grid-cols-2 gap-y-4 gap-x-2 text-sm pb-6">
           {chartData.map((entry) => {
             const categoryInfo = BILL_CATEGORIES.find(c => c.id === entry.name);
             return (
               <div key={entry.name} className="flex items-center gap-2">
                 <div 
-                  className="h-3 w-3 rounded-full" 
+                  className="h-2.5 w-2.5 rounded-full" 
                   style={{ backgroundColor: entry.fill }}
                 />
-                <span className="truncate text-muted-foreground">
+                <span className="truncate text-muted-foreground text-xs font-medium">
                   {categoryInfo?.label || entry.name}
                 </span>
-                <span className="ml-auto font-medium">
+                <span className="ml-auto text-xs font-semibold text-foreground">
                   {Math.round((entry.value / chartData.reduce((acc, curr) => acc + curr.value, 0)) * 100)}%
                 </span>
               </div>

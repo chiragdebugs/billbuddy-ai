@@ -68,33 +68,33 @@ export default function Sidebar({ isOpen, onClose, onOpenSearch }: SidebarProps)
       )}
 
       <aside
-        className={`fixed left-0 top-0 z-50 h-screen w-64 border-r bg-background transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed left-0 top-0 z-50 h-screen w-64 border-r border-border/40 bg-background/80 backdrop-blur-xl transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex h-full flex-col p-6">
-          <div className="mb-10 flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-soft">
+          <div className="mb-10 flex items-center gap-3 pl-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-accent text-accent-foreground shadow-soft">
               <WalletCards size={18} />
             </div>
             <h1 className="text-xl font-semibold tracking-tight text-foreground">
-              BillBuddy AI
+              BillBuddy
             </h1>
           </div>
 
-          <nav className="space-y-2">
+          <nav className="space-y-1.5">
             <button
               onClick={() => {
                 if (onOpenSearch) onOpenSearch();
                 onClose();
               }}
-              className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+              className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:bg-muted/50 hover:text-foreground"
             >
               <div className="flex items-center gap-3">
-                <Search size={20} />
+                <Search size={18} />
                 <span>Search</span>
               </div>
-              <div className="hidden items-center gap-1 rounded border bg-background/50 px-1.5 py-0.5 text-[10px] font-medium sm:flex">
+              <div className="hidden items-center gap-1 rounded-md border border-border/50 bg-muted px-1.5 py-0.5 text-[10px] font-medium sm:flex">
                 <span>⌘</span>K
               </div>
             </button>
@@ -108,22 +108,22 @@ export default function Sidebar({ isOpen, onClose, onOpenSearch }: SidebarProps)
                   to={item.path}
                   onClick={onClose}
                   className={({ isActive }) =>
-                    `flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
+                    `flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? "bg-primary/5 text-primary"
-                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                        ? "bg-accent text-accent-foreground shadow-soft"
+                        : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
                     }`
                   }
                 >
-                  <Icon size={20} />
+                  <Icon size={18} />
                   {item.name}
                 </NavLink>
               );
             })}
           </nav>
 
-          <div className="mt-auto">
-            <div className="flex flex-col gap-4">
+          <div className="mt-auto pt-8">
+            <div className="flex flex-col gap-4 rounded-2xl border border-border/40 bg-muted/30 p-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-muted-foreground">Theme</span>
                 <ThemeToggle />

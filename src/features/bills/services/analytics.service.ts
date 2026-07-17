@@ -72,8 +72,8 @@ export const analyticsService = {
     if (reliabilityScore > 100) reliabilityScore = 100;
 
     // 3. Generate AI Recommendation
-    let recommendation: PaymentBehavior["recommendation"] = "Gentle Nudge";
-    let message = "";
+    let recommendation: PaymentBehavior["recommendation"];
+    let message: string;
 
     if (averageDaysToPay !== null) {
       if (currentBillAgeDays < averageDaysToPay - 1) {
