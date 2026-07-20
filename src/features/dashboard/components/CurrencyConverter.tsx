@@ -34,7 +34,7 @@ export default function CurrencyConverter() {
   }, [amount, fromCurrency, toCurrency]);
 
   return (
-    <Card className="border-primary/20 bg-primary/5">
+    <Card className="bg-primary/5 border border-primary/20 shadow-soft">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm font-medium flex items-center gap-2">
           <Plane className="h-4 w-4 text-primary" />

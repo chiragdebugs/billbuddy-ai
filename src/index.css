@@ -46,27 +46,29 @@
     --radius-2xl: calc(var(--radius) * 1.8);
     --radius-3xl: calc(var(--radius) * 2.2);
     --radius-4xl: calc(var(--radius) * 2.6);
+    --animate-spin-around: spin-around calc(var(--speed) * 2) infinite linear;
+    --animate-slide: slide var(--speed) ease-in-out infinite alternate;
 }
 
 :root {
-    --background: #FAFAFA;
+    --background: #F6F9FC;
     --foreground: #111111;
     --card: #FFFFFF;
     --card-foreground: #111111;
     --popover: #FFFFFF;
     --popover-foreground: #111111;
-    --primary: #111111;
+    --primary: #635BFF;
     --primary-foreground: #FFFFFF;
     --secondary: #F3F4F6;
     --secondary-foreground: #111111;
     --muted: #F3F4F6;
     --muted-foreground: #6B7280;
-    --accent: #6366F1;
+    --accent: #635BFF;
     --accent-foreground: #FFFFFF;
     --destructive: oklch(0.577 0.245 27.325);
     --border: #E5E7EB;
     --input: #E5E7EB;
-    --ring: #6366F1;
+    --ring: #635BFF;
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
@@ -92,18 +94,18 @@
     --card-foreground: #FAFAFA;
     --popover: #18181B;
     --popover-foreground: #FAFAFA;
-    --primary: #FFFFFF;
-    --primary-foreground: #111111;
+    --primary: #635BFF;
+    --primary-foreground: #FFFFFF;
     --secondary: #27272A;
     --secondary-foreground: #FAFAFA;
     --muted: #27272A;
     --muted-foreground: #A1A1AA;
-    --accent: #6366F1;
+    --accent: #635BFF;
     --accent-foreground: #FFFFFF;
     --destructive: oklch(0.704 0.191 22.216);
     --border: #27272A;
     --input: #27272A;
-    --ring: #6366F1;
+    --ring: #635BFF;
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
@@ -153,4 +155,57 @@
   html {
     @apply font-sans;
   }
+}
+
+@keyframes spin-around {
+  0% { transform: translateZ(0) rotate(0); }
+  15%, 35% { transform: translateZ(0) rotate(90deg); }
+  65%, 85% { transform: translateZ(0) rotate(270deg); }
+  100% { transform: translateZ(0) rotate(360deg); }
+}
+
+@keyframes slide {
+  to { transform: translate(calc(100cqw - 100%), 0); }
+}
+
+@keyframes moveInCircle {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes moveVertical {
+  0% { transform: translateY(-50%); }
+  50% { transform: translateY(50%); }
+  100% { transform: translateY(-50%); }
+}
+
+@keyframes moveHorizontal {
+  0% { transform: translateX(-50%) translateY(-10%); }
+  50% { transform: translateX(50%) translateY(10%); }
+  100% { transform: translateX(-50%) translateY(-10%); }
+}
+
+@utility animate-first {
+  animation: moveVertical 30s ease infinite;
+}
+
+@utility animate-second {
+  animation: moveInCircle 20s reverse infinite;
+  transform-origin: calc(50% - 400px);
+}
+
+@utility animate-third {
+  animation: moveInCircle 40s linear infinite;
+  transform-origin: calc(50% + 400px);
+}
+
+@utility animate-fourth {
+  animation: moveHorizontal 40s ease infinite;
+  transform-origin: calc(50% - 200px);
+}
+
+@utility animate-fifth {
+  animation: moveInCircle 20s ease infinite;
+  transform-origin: calc(50% - 800px) calc(50% + 200px);
 }

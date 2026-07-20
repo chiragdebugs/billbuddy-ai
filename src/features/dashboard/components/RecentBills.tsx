@@ -39,7 +39,7 @@ export default function RecentBills() {
 
   if (loading) {
     return (
-      <Card>
+      <Card className="bg-card shadow-soft border border-black/5">
         <CardHeader>
           <CardTitle>Recent Bills</CardTitle>
         </CardHeader>
@@ -59,7 +59,7 @@ export default function RecentBills() {
   }
 
   return (
-    <Card>
+    <Card className="bg-card shadow-soft border border-black/5">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>Recent Bills</CardTitle>
         <Link to="/bills" className={buttonVariants({ variant: "ghost", size: "sm" })}>

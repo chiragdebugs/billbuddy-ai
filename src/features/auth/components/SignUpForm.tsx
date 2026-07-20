@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { authService } from "../services/auth.service";
@@ -151,13 +151,13 @@ export default function SignUpForm() {
         </div>
       )}
 
-      <Button
+      <ShimmerButton
         type="submit"
-        className="w-full"
+        className="w-full mt-4"
         disabled={isSubmitting}
       >
         {isSubmitting ? "Creating Account..." : "Create Account"}
-      </Button>
+      </ShimmerButton>
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">

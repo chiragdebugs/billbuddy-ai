@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
-import { Button } from "@/components/ui/button";
+import { ShimmerButton } from "@/components/magicui/shimmer-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -84,13 +84,13 @@ export default function LoginForm() {
         </div>
       )}
 
-      <Button
+      <ShimmerButton
         type="submit"
-        className="w-full"
+        className="w-full mt-4"
         disabled={isSubmitting}
       >
         {isSubmitting ? "Signing In..." : "Sign In"}
-      </Button>
+      </ShimmerButton>
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">

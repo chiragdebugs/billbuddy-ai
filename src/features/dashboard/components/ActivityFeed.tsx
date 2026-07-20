@@ -36,7 +36,7 @@ export default function ActivityFeed() {
 
   if (loading) {
     return (
-      <Card>
+      <Card className="bg-card shadow-soft border border-black/5">
         <CardHeader>
           <CardTitle>Activity Feed</CardTitle>
         </CardHeader>
@@ -67,7 +67,7 @@ export default function ActivityFeed() {
   };
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col bg-card shadow-soft border border-black/5">
       <CardHeader>
         <CardTitle>Activity Feed</CardTitle>
       </CardHeader>

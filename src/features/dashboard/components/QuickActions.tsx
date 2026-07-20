@@ -32,7 +32,7 @@ export default function QuickActions() {
   };
 
   return (
-    <Card className="shrink-0">
+    <Card className="shrink-0 bg-card shadow-soft border border-black/5">
       <CardHeader>
         <CardTitle>Quick Actions</CardTitle>
       </CardHeader>

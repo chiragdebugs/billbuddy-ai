@@ -30,7 +30,7 @@ export default function ExpenseChart({ data }: ExpenseChartProps) {
   // If no data, show a placeholder
   if (!data || data.length === 0) {
     return (
-      <Card className="col-span-full xl:col-span-1">
+      <Card className="col-span-full xl:col-span-1 bg-card shadow-soft border border-black/5">
         <CardHeader>
           <CardTitle>Spending by Category</CardTitle>
         </CardHeader>
@@ -63,7 +63,7 @@ export default function ExpenseChart({ data }: ExpenseChartProps) {
   }));
 
   return (
-    <Card className="col-span-full xl:col-span-1 flex flex-col bg-glass-card border-border/30 shadow-soft">
+    <Card className="col-span-full xl:col-span-1 flex flex-col bg-card shadow-soft border border-black/5">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-medium text-foreground">Spending by Category</CardTitle>
       </CardHeader>

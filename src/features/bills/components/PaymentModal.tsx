@@ -92,7 +92,7 @@ export default function PaymentModal({
         className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm"
         onClick={!isProcessing ? onClose : undefined}
       />
-      <div className="fixed left-[50%] top-[50%] z-50 w-full max-w-md translate-x-[-50%] translate-y-[-50%] rounded-2xl border bg-background p-6 shadow-card duration-200 sm:rounded-2xl">
+      <div className="fixed left-[50%] top-[50%] z-50 w-full max-w-md translate-x-[-50%] translate-y-[-50%] rounded-xl border border-black/5 bg-card p-6 shadow-card duration-200 sm:rounded-xl">
         {!isSuccess ? (
           <>
             <div className="flex flex-col space-y-1.5 text-center sm:text-left mb-6">

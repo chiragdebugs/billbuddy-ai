@@ -1,3 +1,4 @@
+
 export const loadRazorpay = (): Promise<boolean> => {
   return new Promise((resolve) => {
     // If it's already loaded

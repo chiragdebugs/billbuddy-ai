@@ -27,7 +27,7 @@ export default function StatsCard({
 }: StatsCardProps) {
   return (
     <motion.div whileHover={{ y: -4, scale: 1.01 }} transition={{ type: "spring", stiffness: 300 }}>
-      <Card className="overflow-hidden bg-glass-card hover:shadow-card transition-all border-border/30 h-full">
+      <Card className="overflow-hidden bg-card shadow-soft hover:shadow-card transition-all border border-black/5 h-full">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
           <CardTitle className="text-sm font-medium text-muted-foreground">
             {title}

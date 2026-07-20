@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 export default function AIInsights() {
   return (
-    <Card className="border-primary/20 bg-primary/5">
+    <Card className="bg-primary/5 border border-primary/20 shadow-soft">
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2 text-primary">
           <Sparkles size={18} />

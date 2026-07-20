@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import GlobalSearch from "./GlobalSearch";
+import { AnimatedGradientBackground } from "@/components/ui/animated-gradient-background";
 
 interface LayoutProps {
   children: ReactNode;
@@ -29,7 +30,7 @@ export default function Layout({ children }: LayoutProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-transparent">
+    <AnimatedGradientBackground containerClassName="min-h-screen">
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
@@ -55,6 +56,6 @@ export default function Layout({ children }: LayoutProps) {
           </AnimatePresence>
         </main>
       </div>
-    </div>
+    </AnimatedGradientBackground>
   );
 }
